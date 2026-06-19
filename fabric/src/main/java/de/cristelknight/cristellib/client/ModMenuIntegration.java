@@ -24,8 +24,7 @@ public class ModMenuIntegration implements ModMenuApi {
         if (!Util.isClothConfigLoaded()) return Map.of();
 
         Map<String, ConfigScreenFactory<?>> screens = new HashMap<>();
-        for (String modId : ScreenBuilder.allModsWithScreen()) {
-
+        for (String modId : ScreenBuilder.allModsWithScreenFiltered()) {
             screens.put(modId, (providedConfigScreenFactories) ->
                     new ScreenBuilder(modId).create(providedConfigScreenFactories)
             );
