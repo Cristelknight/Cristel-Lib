@@ -1,5 +1,8 @@
 # Changelog
 
+## [3.1.12]
+- update to 26.3
+
 ## [3.1.11]
 - fix more thread safety issues
 
