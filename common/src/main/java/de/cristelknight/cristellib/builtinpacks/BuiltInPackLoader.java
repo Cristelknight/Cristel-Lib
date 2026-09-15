@@ -9,7 +9,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.*;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.RepositorySource;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static de.cristelknight.cristellib.Constants.getWithPrefix;
 
@@ -130,14 +130,14 @@ public class BuiltInPackLoader {
 
         Pack profile = Pack.readMetaAndCreate(metadata, new Pack.ResourcesSupplier() {
             @Override
-            public @NotNull PackResources openPrimary(@NonNull PackLocationInfo var1) {
+            public @NonNull PackMetadataResources openMetadata(@NonNull PackLocationInfo packLocationInfo) {
                 return pack;
             }
 
             @Override
-            public @NonNull PackResources openFull(@NonNull PackLocationInfo packLocationInfo, Pack.@NonNull Metadata metadata) {
+            public @NonNull Stream<PackResources> openResources(@NonNull PackLocationInfo packLocationInfo, Pack.@NonNull Metadata metadata) {
                 if (metadata.overlays().isEmpty()) {
-                    return pack;
+                    return Stream.of(pack);
                 }
 
                 List<PackResources> overlays = new ArrayList<>(metadata.overlays().size());
@@ -150,7 +150,7 @@ public class BuiltInPackLoader {
                         overlays.add(overlayPack);
                 }
 
-                return new CompositePackResources(pack, overlays);
+                return Stream.of(new OverlayedPackResources(pack, overlays));
             }
         }, type, selectionConfig);
 

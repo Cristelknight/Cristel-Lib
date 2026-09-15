@@ -10,7 +10,7 @@ version="${version}" #mandatory
 displayName="${mod_name}"
 authors="${mod_author}"
 displayURL="${homepage}"
-logoFile="pack.png"
+iconFile="pack.png"
 
 
 # Display Test controls the display for your mod in the server connection screen
