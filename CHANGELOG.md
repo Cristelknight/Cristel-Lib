@@ -1,5 +1,8 @@
 # Changelog
 
+## [3.1.13]
+- hopefully fix performance issue when generating screens in big modpacks
+
 ## [3.1.12]
 - update to 26.3
 
