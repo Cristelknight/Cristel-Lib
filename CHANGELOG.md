@@ -1,5 +1,8 @@
 # Changelog
 
+## [3.1.13]
+- hopefully fix performance issue when generating screens in big modpacks
+
 ## [3.1.11]
 - fix more thread safety issues
 
