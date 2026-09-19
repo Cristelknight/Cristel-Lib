@@ -63,9 +63,9 @@ public class ScreenBuilder {
         return Optional.empty();
     }
 
-    public static boolean hasScreen(String modId) {
-        return ExtensionRegistry.getExtensions().values().stream()
-                .anyMatch(loadPredicate -> loadPredicate.test(modId));
+    // Tests if any screen is available for the given modId
+    public static boolean hasScreen(Collection<ExtensionRegistry.LoadPredicate> predicates, String modId) {
+        return predicates.stream().anyMatch(loadPredicate -> loadPredicate.test(modId));
     }
 
     public static Set<String> allModsWithScreenFiltered() {
@@ -75,8 +75,9 @@ public class ScreenBuilder {
     }
 
     public static Set<String> allModsWithScreen() {
+        var predicates = ExtensionRegistry.getExtensions().values();
         return Services.MOD_LOADING.getModIds().stream()
-                .filter(ScreenBuilder::hasScreen)
+                .filter(modId -> hasScreen(predicates, modId))
                 .collect(Collectors.toSet());
     }
 }
