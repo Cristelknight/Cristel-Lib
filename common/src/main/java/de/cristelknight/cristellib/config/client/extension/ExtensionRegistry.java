@@ -5,16 +5,18 @@ import de.cristelknight.cristellib.config.client.extension.extensions.StructureC
 import de.cristelknight.cristellib.config.client.simple.ClientConfigRegistry;
 import de.cristelknight.cristellib.util.Util;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class ExtensionRegistry {
 
-    private static final ConcurrentMap<ExtensionFactory<?>, LoadPredicate> EXTENSIONS = new ConcurrentHashMap<>();
+    private static volatile Map<ExtensionFactory<?>, LoadPredicate> extensions =
+            Map.of();
 
     public static Map<ExtensionFactory<?>, LoadPredicate> getExtensions() {
-        return Map.copyOf(EXTENSIONS);
+        return extensions;
     }
 
     @SuppressWarnings("unused")
@@ -22,8 +24,10 @@ public class ExtensionRegistry {
         registerConfigScreenExtension(extension, (modId) -> true);
     }
 
-    public static void registerConfigScreenExtension(ExtensionFactory<?> extensionFactory, LoadPredicate predicate) {
-        EXTENSIONS.put(extensionFactory, predicate);
+    public static synchronized void registerConfigScreenExtension(ExtensionFactory<?> factory, LoadPredicate predicate) {
+        var updated = new HashMap<>(extensions);
+        updated.put(factory, predicate);
+        extensions = Map.copyOf(updated);
     }
 
     static {
