@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.13]
+- hopefully fix performance issue when generating screens in big modpacks
+- improve fabric command to open Cristel Lib screens
+
 ## [3.1.11]
 - fix more thread safety issues
 
